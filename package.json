@@ -1,0 +1,16 @@
+{
+  "name": "dtn_interview_project",
+  "version": "1.0.0",
+  "description": "this app will read data from lightning.json file and compare against assets.json file and output text to console (\"lightning alert for <assetOwner>:<assetName>\") when a match is found.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Nabil Zawahiri",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "quadkeytools": "^0.0.2"
+  }
+}
