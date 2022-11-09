@@ -1,5 +1,4 @@
-1- unzip package
-2- open command/terminal and run: npm install
+1- open command/terminal and run: npm install
 
 # npm start
 will start the app
