@@ -7,10 +7,21 @@ const router = express.Router();
 
 router.get('/getinput', (req, res, next) => {
     if (assets.length === 0) {
-        res.send('no assets found...');
+        res.status(500).send('no assets found...');
         return;
     }
-    const alerts = [];
+    const HEARTBEAT = 9;
+    const alerts = new Map();
+
+    //Building asset map
+    const assetMap = new Map();
+    assets.forEach((asset) => {
+        assetMap.set(asset.quadKey, {
+            assetName: asset.assetName,
+            assetOwner: asset.assetOwner,
+            quadKey: asset.quadKey
+        })
+    })
 
     try {
         const rl = readline.createInterface({
@@ -24,19 +35,23 @@ router.get('/getinput', (req, res, next) => {
             line = JSON.parse(line);
 
             // ignore heartbeats
-            if (line.flashType !== 9) {
+            if (line.flashType !== HEARTBEAT) {
                 // get quad from lat/long
                 const quad = quadkey.locationToQuadkey({lat: line.latitude, lng: line.longitude}, 12);
                 
-                // search alerts array
-                const alertIndex = alerts.findIndex(alert => alert.quadKey === quad);
+                // search alerts map
+                const alertIndex = alerts.get(quad);
                 
                 // if we don't have one already, search assets and add alert
-                if (alertIndex === -1) {
-                    const asset = assets.find(obj => obj.quadKey === quad);
+                if (alertIndex === undefined) {
+                    const asset = assetMap.get(quad);
                     if (asset !== undefined) {
                         console.log(`lightning alert for ${asset.assetOwner}:${asset.assetName}`);
-                        alerts.push(asset);
+                        alerts.set(asset.quadKey, {
+                            assetName: asset.assetName,
+                            assetOwner: asset.assetOwner,
+                            quadKey: asset.quadKey
+                        });
                     }
                 }
             }

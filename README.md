@@ -1,3 +1,8 @@
+# description
+This program goes through lightning.json as a stream input line by line.
+For each line it converts the lat/long info into quadKey format then finds a match 
+in the assets.json file that gets converted into a map for faster lookup and shows an alert.
+
 1- open command/terminal and run: npm install
 
 # npm start
